@@ -1,6 +1,9 @@
 mod abbreviate;
+mod rpc;
 mod sublist;
 mod uniques;
+
+use rpc::CalculatorInput::*;
 
 fn main() {
     let teste: String = "Halley's Comet".to_string();
@@ -9,6 +12,7 @@ fn main() {
     run_sublist();
     run_uniques();
     run_uniques2();
+    rpc::evaluate(&[Value(1), Value(4), Divide]);
 }
 
 fn run_sublist() {
