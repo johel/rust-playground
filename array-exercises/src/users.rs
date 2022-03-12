@@ -1,0 +1,176 @@
+#[derive(Debug)]
+pub enum Sex {
+    M,
+    F,
+}
+
+#[derive(Debug)]
+pub struct User {
+    pub id: u32,
+    pub city: &'static str,
+    pub name: &'static str,
+    pub age: u32,
+    pub weight: u32,
+    pub sex: Sex,
+    pub height: f64,
+    pub salary: f64,
+    pub married: bool,
+    pub active: bool,
+}
+
+#[derive(Debug)]
+pub struct UserProduct {
+    pub id: u32,
+    pub user_id: u32,
+    pub name: &'static str,
+    pub category: &'static str,
+    pub price: f64,
+}
+
+pub static USERS: &'static [User] = &[
+    User {
+        id: 1,
+        city: "São Paulo",
+        name: "josé da silva",
+        age: 21,
+        weight: 70,
+        sex: Sex::M,
+        height: 1.7,
+        salary: 1000.00,
+        married: false,
+        active: true,
+    },
+    User {
+        id: 2,
+        city: "Rio de Janeiro",
+        name: "maria clementina correia",
+        age: 17,
+        weight: 70,
+        sex: Sex::F,
+        height: 1.6,
+        salary: 2000.00,
+        married: false,
+        active: true,
+    },
+    User {
+        id: 3,
+        city: "Rio de Janeiro",
+        name: "antonieta francesa rainha",
+        age: 28,
+        weight: 70,
+        sex: Sex::F,
+        height: 1.65,
+        salary: 3000.00,
+        married: true,
+        active: true,
+    },
+    User {
+        id: 4,
+        city: "Rio de Janeiro",
+        name: "silva melo de aguiar",
+        age: 38,
+        weight: 70,
+        sex: Sex::M,
+        height: 1.85,
+        salary: 5000.00,
+        married: true,
+        active: true,
+    },
+    User {
+        id: 5,
+        city: "São Paulo",
+        name: "joão carvalho da conceição",
+        age: 48,
+        weight: 70,
+        sex: Sex::M,
+        height: 1.9,
+        salary: 9000.00,
+        married: false,
+        active: true,
+    },
+    User {
+        id: 6,
+        city: "São Paulo",
+        name: "zé rico programador",
+        age: 62,
+        weight: 90,
+        sex: Sex::M,
+        height: 1.82,
+        salary: 30000.00, // 30 mil
+        married: false,
+        active: true,
+    },
+];
+
+pub static USER_PRODUCTS: &'static [UserProduct] = &[
+    UserProduct {
+        id: 1,
+        user_id: 1,
+        name: "Maçã",
+        category: "Comida",
+        price: 10.00,
+    },
+    UserProduct {
+        id: 2,
+        user_id: 1,
+        name: "Blusa",
+        category: "Roupa",
+        price: 50.00,
+    },
+    UserProduct {
+        id: 3,
+        user_id: 2,
+        name: "Calça Jeans",
+        category: "Roupa",
+        price: 300.00,
+    },
+    UserProduct {
+        id: 4,
+        user_id: 2,
+        name: "Sapatos",
+        category: "Roupa",
+        price: 100.00,
+    },
+    UserProduct {
+        id: 5,
+        user_id: 2,
+        name: "Sapatos",
+        category: "Roupa",
+        price: 120.00,
+    },
+    UserProduct {
+        id: 6,
+        user_id: 2,
+        name: "Toalha",
+        category: "Cama e Mesa",
+        price: 35.00,
+    },
+    UserProduct {
+        id: 7,
+        user_id: 3,
+        name: "Uber",
+        category: "Transporte",
+        price: 20.00,
+    },
+    UserProduct {
+        id: 8,
+        user_id: 3,
+        name: "Uber",
+        category: "Transporte",
+        price: 20.00,
+    },
+    UserProduct {
+        id: 9,
+        user_id: 3,
+        name: "Taxi",
+        category: "Transporte",
+        price: 30.00,
+    },
+    UserProduct {
+        id: 10,
+        user_id: 6,
+        name: "Computador",
+        category: "Tecnologia",
+        price: 5000.00,
+    },
+];
