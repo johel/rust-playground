@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, Eq, Hash, PartialEq, Clone)]
 pub enum Sex {
     M,
     F,
