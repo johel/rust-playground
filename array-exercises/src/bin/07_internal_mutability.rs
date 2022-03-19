@@ -1,6 +1,6 @@
 #[allow(unused)]
 use array_exercises::{Sex, User, USERS};
-use std::{cell::RefCell, rc::Rc};
+use std::{cell::RefCell, rc::Rc, slice::SliceIndex};
 
 #[derive(Debug)]
 struct DirectPeople {
@@ -22,6 +22,55 @@ impl DirectPeople {
 
     fn insert_boy(&mut self, boy: Person) {
         self.boys.push(boy);
+    }
+}
+
+struct DirectPeopleIterator<'a> {
+    girls_time: bool,
+    girl_index: usize,
+    boy_index: usize,
+    girls: &'a Vec<Person>,
+    boys: &'a Vec<Person>,
+}
+
+impl<'a> Iterator for DirectPeopleIterator<'a> {
+    type Item = &'a Person;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.girls_time == true && self.girl_index > self.girls.len() - 1 {
+            self.girls_time = false;
+        }
+
+        if self.girls_time == false && self.boy_index > self.boys.len() - 1 {
+            self.girls_time = true;
+        }
+
+        let result;
+        if self.girls_time {
+            result = self.girls.get(self.girl_index);
+            self.girls_time = false;
+            self.girl_index += 1;
+        } else {
+            result = self.boys.get(self.boy_index);
+            self.girls_time = false;
+            self.boy_index += 1;
+        }
+
+        result
+    }
+}
+
+impl<'a> IntoIterator for &'a DirectPeople {
+    type Item = &'a Person;
+    type IntoIter = DirectPeopleIterator<'a>;
+    fn into_iter(self) -> Self::IntoIter {
+        DirectPeopleIterator {
+            girls_time: true,
+            girl_index: 0,
+            boy_index: 0,
+            girls: &self.girls,
+            boys: &self.boys,
+        }
     }
 }
 
