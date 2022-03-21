@@ -283,6 +283,15 @@ fn experiment_two() {
 }
 
 fn experiment_one() {
+    let mut slice = ["1".to_string(), "2".to_string()];
+    {
+        let last = slice.last_mut().unwrap();
+        assert_eq!(*last, "2".to_string());
+        *last = "3".to_string();
+    }
+    assert_eq!(slice, ["1".to_string(), "3".to_string()]);
+    println!("slice: {slice:?}");
+
     let mut johel = Person {
         name: String::from("Johel"),
         surname: Some(String::from("Carvalho")),
