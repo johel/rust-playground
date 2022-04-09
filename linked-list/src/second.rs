@@ -100,6 +100,40 @@ impl<'a, T> Iterator for Iter<'a, T> {
     }
 }
 
+pub struct IterMut<'a, T> {
+    next: Option<&'a mut Node<T>>,
+}
+
+impl<T> List<T> {
+    pub fn iter_mut(&mut self) -> IterMut<T> {
+        //or 1:
+        // Iter {
+        //     next: self.head.as_ref().map(|node| &**node),
+        // }
+        //or 2:
+        // Iter {
+        //     next: self.head.as_ref().map(|node| node.as_ref()),
+        // }
+
+        IterMut {
+            next: self.head.as_deref_mut(),
+        }
+    }
+}
+
+impl<'a, T> Iterator for IterMut<'a, T> {
+    type Item = &'a mut T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.next.take().map(|node| {
+            // self.next = node.next.as_ref().map(|node| &**node);
+            // self.next = node.next.as_ref().map(|node| node.as_ref());
+            self.next = node.next.as_deref_mut();
+            &mut node.elem
+        })
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::List;
@@ -178,5 +212,26 @@ mod test {
         assert_eq!(iter.next(), None);
 
         println!("list: {:?}", list);
+    }
+
+    #[test]
+    fn iter_mut() {
+        let mut list = List::new();
+        list.push(1);
+        list.push(2);
+        list.push(3);
+
+        let mut iter = list.iter_mut();
+        let a = iter.next();
+        let b = a.map(|el| {
+            *el += 1;
+            *el + 2
+        });
+
+        assert_eq!(iter.next(), Some(&mut 2));
+        assert_eq!(iter.next(), Some(&mut 1));
+
+        println!("b: {:?}", b);
+        println!("list mut: {:?}", list);
     }
 }
