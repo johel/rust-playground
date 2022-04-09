@@ -39,38 +39,11 @@ impl<T> List<T> {
     pub fn peek_mut(&mut self) -> Option<&mut T> {
         self.head.as_mut().map(|node| &mut node.elem)
     }
-}
 
-impl<T> Drop for List<T> {
-    fn drop(&mut self) {
-        let mut cur_link = self.head.take();
-        while let Some(mut boxed_node) = cur_link {
-            cur_link = boxed_node.next.take();
-        }
-    }
-}
-
-pub struct IntoIter<T>(List<T>);
-
-impl<T> List<T> {
     pub fn into_iter(self) -> IntoIter<T> {
         IntoIter(self)
     }
-}
 
-impl<T> Iterator for IntoIter<T> {
-    type Item = T;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        self.0.pop()
-    }
-}
-
-pub struct Iter<'a, T> {
-    next: Option<&'a Node<T>>,
-}
-
-impl<T> List<T> {
     pub fn iter(&self) -> Iter<T> {
         //or 1:
         // Iter {
@@ -85,6 +58,35 @@ impl<T> List<T> {
             next: self.head.as_deref(),
         }
     }
+
+    pub fn iter_mut(&mut self) -> IterMut<T> {
+        IterMut {
+            next: self.head.as_deref_mut(),
+        }
+    }
+}
+
+impl<T> Drop for List<T> {
+    fn drop(&mut self) {
+        let mut cur_link = self.head.take();
+        while let Some(mut boxed_node) = cur_link {
+            cur_link = boxed_node.next.take();
+        }
+    }
+}
+
+pub struct IntoIter<T>(List<T>);
+
+impl<T> Iterator for IntoIter<T> {
+    type Item = T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.0.pop()
+    }
+}
+
+pub struct Iter<'a, T> {
+    next: Option<&'a Node<T>>,
 }
 
 impl<'a, T> Iterator for Iter<'a, T> {
@@ -102,23 +104,6 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
 pub struct IterMut<'a, T> {
     next: Option<&'a mut Node<T>>,
-}
-
-impl<T> List<T> {
-    pub fn iter_mut(&mut self) -> IterMut<T> {
-        //or 1:
-        // Iter {
-        //     next: self.head.as_ref().map(|node| &**node),
-        // }
-        //or 2:
-        // Iter {
-        //     next: self.head.as_ref().map(|node| node.as_ref()),
-        // }
-
-        IterMut {
-            next: self.head.as_deref_mut(),
-        }
-    }
 }
 
 impl<'a, T> Iterator for IterMut<'a, T> {
