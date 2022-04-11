@@ -44,14 +44,20 @@ impl<T> List<T> {
     }
 }
 
-// impl<T> Drop for List<T> {
-//     fn drop(&mut self) {
-//         let mut cur_link = self.head.take();
-//         while let Some(mut boxed_node) = cur_link {
-//             cur_link = boxed_node.next.take();
-//         }
-//     }
-// }
+impl<T> Drop for List<T> {
+    fn drop(&mut self) {
+        let mut head = self.head.take();
+        while let Some(node) = head {
+            // Rc::try_unwrap: Returns the inner value, if the Rc has exactly one strong reference.
+            // Otherwise, an Err is returned with the same Rc that was passed in
+            if let Ok(mut node) = Rc::try_unwrap(node) {
+                head = node.next.take();
+            } else {
+                break;
+            }
+        }
+    }
+}
 
 pub struct Iter<'a, T> {
     next: Option<&'a Node<T>>,
