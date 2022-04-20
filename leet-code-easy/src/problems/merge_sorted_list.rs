@@ -61,7 +61,7 @@ pub fn build_vec_from_list(list: &mut Option<Box<ListNode>>) -> Vec<i32> {
 
 #[cfg(test)]
 mod tests {
-    use crate::*;
+    use super::*;
 
     #[test]
     fn hey() {
